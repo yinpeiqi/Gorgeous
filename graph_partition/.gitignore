@@ -1,0 +1,12 @@
+/cmake-build-debug/
+/cmake-build-release-remote-host/
+/.idea/
+build/*
+build
+bigann
+GKlib
+KaHIP
+METIS
+.cache
+.vscode
+openmpi

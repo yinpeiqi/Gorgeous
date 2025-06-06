@@ -1,0 +1,6 @@
+[submodule "gperftools"]
+	path = gperftools
+	url = https://github.com/gperftools/gperftools.git
+[submodule "graph_partition/oneTBB"]
+	path = graph_partition/oneTBB
+	url = https://github.com/uxlfoundation/oneTBB.git
