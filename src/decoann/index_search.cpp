@@ -146,11 +146,9 @@ namespace diskann {
           unsigned nnbrs = *(node_nbrs++);
           unsigned nbors_cand_size = 0;
           for (unsigned m = 0; m < nnbrs; ++m) {
-            if (visited.find(node_nbrs[m]) != visited.end()) {
-              continue;
+            if (visited.insert(node_nbrs[m]).second) {
+              nbr_buf[nbors_cand_size++] = node_nbrs[m];
             }
-            visited.insert(node_nbrs[m]);
-            nbr_buf[nbors_cand_size++] = node_nbrs[m];
           }
           if (nbors_cand_size) {
             _mm_prefetch((char *) nbr_buf.data(), _MM_HINT_T1);
@@ -233,8 +231,7 @@ namespace diskann {
                 auto fn = std::make_shared<FrontierNode>(id, pid, index_fid);
                 frontier.push_back(fn);
                 ftr_id++;
-                if (visited.find(id) == visited.end()) {
-                  visited.insert(id);
+                if (visited.insert(id).second) {
                   add_to_retset(id, dist_scratch[j], false);
                 }
               }
@@ -258,11 +255,9 @@ namespace diskann {
 
             unsigned nbors_size = 0;
             for (unsigned m = 0; m < mem_graph_[id].size(); ++m) {
-              if (visited.find(mem_graph_[id][m]) != visited.end()) {
-                continue;
+              if (visited.insert(mem_graph_[id][m]).second) {
+                nbr_buf[nbors_size++] = mem_graph_[id][m];
               }
-              visited.insert(mem_graph_[id][m]);
-              nbr_buf[nbors_size++] = mem_graph_[id][m];
             }
             compute_pq_dists(nbr_buf.data(), nbors_size, dist_scratch);
             if (stats != nullptr) {
@@ -311,9 +306,8 @@ namespace diskann {
                   n_cached_in_q++;
                 } else {
                   auto pid = id2page_[retset[marker].id];
-                  if (page_visited.find(pid) == page_visited.end()) {
+                  if (page_visited.insert(pid).second) {
                     num_seen++;
-                    page_visited.insert(pid);
                     auto fn = std::make_shared<FrontierNode>(retset[marker].id, pid, index_fid);
                     frontier.push_back(fn);
                   }

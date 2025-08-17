@@ -1,16 +1,21 @@
-# GPS-ANNS
+# Gorgeous: High-Performance Disk-Based Vector Search
 
-In this repository, we share the implementations and experiments of our work *Revisiting the Data Layout for Disk-based High-Dimensional Vector Search*.
+Gorgeous is a high-performance disk-based Approximate Nearest Neighbor Search (ANNS) system designed to efficiently handle large-scale high-dimensional vector datasets. This implementation is based on the research paper *Revisiting the Data Layout for Disk-based High-Dimensional Vector Search*.
 
-## Quick Start
+> **Note:** If you're using DiskANN for high-dimensional vector search in AI workloads, try Gorgeous for significant performance improvements!
 
-To install dependencies, run 
+## 🚀 Quick Start
+
+### Prerequisites
+
+Install system dependencies:
 
 ```bash
 apt install build-essential libboost-all-dev make cmake g++ libaio-dev libgoogle-perftools-dev clang-format libmkl-full-dev
 ```
 
-Build oneTBB library:
+### Build oneTBB Library
+
 ```bash
 cd graph_partition
 git clone https://github.com/uxlfoundation/oneTBB.git
@@ -18,50 +23,70 @@ cd oneTBB
 cmake --build .
 ```
 
-To run benchmarks, go to `scripts` directory, modifies the datasets paths in `config_dataset.sh` and run
+### Running Benchmarks
+
+1. Navigate to the `scripts` directory
+2. Modify dataset paths in `config_dataset.sh`
+3. Run the benchmark:
 
 ```bash
 bash run_benchmark.sh [debug/release] [build/build_mem/gp/split_graph/gr_layout/search]
 ```
 
-| Arguement | Description |
-| - | - |
-| `debug/release` | Debug/Release mode to run, passed to CMake |
-| `build` |  Build index  |
+#### Command Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `debug/release` | Build mode to run (passed to CMake) |
+| `build` | Build the index |
 | `build_mem` | Build memory index |
 | `gp` | Graph partition given index file |
-| `split_graph` | Get a Graph Index only file |
-| `gr_layout` | Get the Graph-Replicated Storage Layout |
-| `search` | Search index |
+| `split_graph` | Generate Graph Index only file |
+| `gr_layout` | Generate Graph-Replicated Storage Layout |
+| `search` | Search the index |
 
-Configure datasets and parameters in `config_local.sh`
+### Configuration
 
-## GPS-ANNS Design
+Configure datasets and parameters in `config_local.sh`.
 
-In this project, we have the following optimizations:
-1. For more memory, we choose to cache the graph data rather than (i) node cache (DiskANN), (ii) in-memory navigation graph (Starling). Instead, we discover that a very small in-memory navigation graph (i.e., 0.5%) is enough for the navigation prupose. For the extra space, we store the graph data only in its memory.
-2. Under high-dimensional data, we find that Starling's locality optimzation (relayout) not working since one page can only holds for few nodes (2-3 nodes per page). Our approach is: each node occupied one page, with storing its exact embedding and neighbor lists. For extra space in the disk, we store the node neighbors' neighbor lists, also known as "disk graph cache".
-3. During search, when a "disk graph cache" page is read, we will search for part of the node neighbors' neighbor list, according to the PQ distance.
-4. We pipelined disk read and PQ distance calculation.
+For detailed parameter descriptions and execution flows, see [scripts/README.md](scripts/README.md).
 
-For all new configs, we added it into config_local.sh.
+## 🏗️ Architecture & Design
 
-The pipeline to run the code:
+<p align="center">
+  <img src="assets/architecture.png" alt="Gorgeous Architecture" width="800">
+</p>
+
+### Key Innovation
+
+Traditional systems like DiskANN and Starling treat the index graph and full vectors equally, storing them together. Gorgeous recognizes the access inequality between these components and prioritizes the index graph over full vectors, significantly reducing disk access overhead and improving search efficiency.
+
+### Core Techniques
+
+- **Graph Priority Memory Cache:** Prioritizes graph caching over exact vector storage
+- **Graph Replicated Disk Layout:** Replicate adjacency lists (the index graph) in disk pages instead of padding
+- **Asynchronous Block Prefetch:** Prefetches disk blocks to reduce access latency
+- **Tiny In-Memory Navigation Graph:** Uses a compact (0.5%) memory index for entry point discovery
+- **Flexible Memory Configuration:** Adapts to various memory ratios with improved search efficiency at higher ratios
+
+## 📊 Performance Comparison
+
+Gorgeous outperforms other disk-based systems ([DiskANN](https://github.com/microsoft/DiskANN) and [Starling](https://github.com/zilliztech/starling)) under identical conditions (20% memory ratio, same CPU threads) on four 100-Million datasets:
+
+<p align="center">
+  <img src="assets/main_result.png" alt="Performance Comparison" width="800">
+</p>
+
+## 🔬 Research Paper
+
+If you find Gorgeous useful in your research, please cite:
+
+**[Gorgeous: Revisiting the Data Layout for Disk-Resident High-Dimensional Vector Search]()**
+
+```bibtex
 ```
-cd scripts/
-# build the diskann index
-bash run_benchmark.sh release build
 
-# build the in-memory index
-bash run_benchmark.sh release build_mem
 
-# make seperation storage for graph and embedding
-bash run_benchmark.sh release split_graph
+## 📄 License
 
-# create disk layout:
-bash run_benchmark.sh release gr_layout
-
-# run the program:
-bash run_benchmark.sh release search knn
-
-```
+MIT License - see [LICENSE](LICENSE) for details.

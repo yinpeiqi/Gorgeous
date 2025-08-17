@@ -18,12 +18,12 @@ MEM_SAMPLE_PATH="${PREFIX}/MEM_SAMPLE/SAMPLE_RATE_${MEM_RAND_SAMPLING_RATE}/"
 MEM_INDEX_PATH="${PREFIX}/MEM_INDEX/MEM_R_${MEM_R}_L_${MEM_BUILD_L}_ALPHA_${MEM_ALPHA}_RANDOM_RATE${MEM_RAND_SAMPLING_RATE}/"
 GP_PATH="${INDEX_PREFIX_PATH}GP_TIMES_${GP_TIMES}_LOCK_${GP_LOCK_NUMS}_CUT${GP_CUT}/"
 
-GRAPH_PATH="${DATA_DIR}/starling/${INDEX_PREFIX_PATH}GRAPH/"
-GRAPH_REP_INDEX_PATH="${DATA_DIR}/starling/${INDEX_PREFIX_PATH}GRAPH_CACHE_INDEX/"
+GRAPH_PATH="${DATA_DIR}/gorgeous/${INDEX_PREFIX_PATH}GRAPH/"
+GRAPH_REP_INDEX_PATH="${DATA_DIR}/gorgeous/${INDEX_PREFIX_PATH}GRAPH_CACHE_INDEX/"
 GRAPH_GP_PATH="${GRAPH_PATH}GP_TIMES_${GP_TIMES}_LOCK_${GP_LOCK_NUMS}_CUT${GP_CUT}/"
 GRAPH_CACHE_INDEX_GP_PATH="${GRAPH_REP_INDEX_PATH}GP_TIMES_${GP_TIMES}_LOCK_${GP_LOCK_NUMS}_CUT${GP_CUT}/"
 
-SUMMARY_FILE_PATH="${DATA_DIR}/starling/${INDEX_PREFIX_PATH}/summary.log"
+SUMMARY_FILE_PATH="${DATA_DIR}/gorgeous/${INDEX_PREFIX_PATH}/summary.log"
 
 print_usage_and_exit() {
   echo "Usage: ./run_benchmark.sh [debug/release] [build/build_mem/gp/search] [knn/range]"
@@ -42,12 +42,12 @@ check_dir_and_make_if_absent() {
 
 case $1 in
   debug)
-    cmake -DCMAKE_BUILD_TYPE=Debug .. -B ${DATA_DIR}/starling/debug
-    EXE_PATH=${DATA_DIR}/starling/debug
+    cmake -DCMAKE_BUILD_TYPE=Debug .. -B ${DATA_DIR}/gorgeous/debug
+    EXE_PATH=${DATA_DIR}/gorgeous/debug
   ;;
   release)
-    cmake -DCMAKE_BUILD_TYPE=Release .. -B ${DATA_DIR}/starling/release
-    EXE_PATH=${DATA_DIR}/starling/release
+    cmake -DCMAKE_BUILD_TYPE=Release .. -B ${DATA_DIR}/gorgeous/release
+    EXE_PATH=${DATA_DIR}/gorgeous/release
   ;;
   *)
     print_usage_and_exit
@@ -57,7 +57,7 @@ pushd $EXE_PATH
 make -j
 popd
 
-mkdir -p ${DATA_DIR}/starling && cd ${DATA_DIR}/starling
+mkdir -p ${DATA_DIR}/gorgeous && cd ${DATA_DIR}/gorgeous
 
 date
 case $2 in

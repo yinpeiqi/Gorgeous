@@ -155,11 +155,7 @@ namespace diskann {
           unsigned nnbrs = *(node_nbrs++);
           unsigned nbors_cand_size = 0;
           for (unsigned m = 0; m < nnbrs; ++m) {
-            if (visited.find(node_nbrs[m]) != visited.end()) {
-              continue;
-            }
-            else {
-              visited.insert(node_nbrs[m]);
+            if (visited.insert(node_nbrs[m]).second) {
               nbr_buf[nbors_cand_size++] = node_nbrs[m];
             }
           }
@@ -182,11 +178,7 @@ namespace diskann {
           unsigned nnbrs = *(node_nbrs++);
           unsigned nbors_cand_size = 0;
           for (unsigned m = 0; m < nnbrs; ++m) {
-            if (visited.find(node_nbrs[m]) != visited.end()) {
-              continue;
-            }
-            else {
-              visited.insert(node_nbrs[m]);
+            if (visited.insert(node_nbrs[m]).second) {
               nbr_buf[nbors_cand_size++] = node_nbrs[m];
             }
           }
@@ -291,11 +283,9 @@ namespace diskann {
 
             unsigned nbors_size = 0;
             for (unsigned m = 0; m < cn->nb_size; ++m) {
-              if (visited.find(cn->node_nbrs[m]) != visited.end()) {
-                continue;
+              if (visited.insert(cn->node_nbrs[m]).second) {
+                nbr_buf[nbors_size++] = cn->node_nbrs[m];
               }
-              visited.insert(cn->node_nbrs[m]);
-              nbr_buf[nbors_size++] = cn->node_nbrs[m];
             }
             compute_pq_dists(nbr_buf.data(), nbors_size, dist_scratch);
             if (stats != nullptr) {
@@ -354,9 +344,8 @@ namespace diskann {
                   num_seen++;
                   n_cached_in_q++;
                 } else {
-                  if (page_visited.find(id) == page_visited.end()) {
+                  if (page_visited.insert(id).second) {
                     num_seen++;
-                    page_visited.insert(id);
                     auto fn = std::make_shared<FrontierNode>(id, id, gc_index_fid);
                     frontier.push_back(fn);
                   }

@@ -62,6 +62,7 @@ int main(int argc, char **argv) {
   }
   GP::Mode m = GP::Mode::ALL;
   if (mode == 1) {
+    ldg_times = 1;
     m = GP::Mode::GRAPH_ONLY;
   } else if (mode == 2) {
     m = GP::Mode::EMB_ONLY;

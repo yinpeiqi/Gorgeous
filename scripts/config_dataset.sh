@@ -15,7 +15,9 @@ dataset_sift_learn() {
   K=10
   DATA_DIM=128
   DATA_N=100000
-  N_PQ_CODE=4         # represent PQ dimension. 4 represents 4 dim compressed to one PQ byte
   SECTOR_LEN=4096     # default SECTOR_LEN for disk page (for build DiskANN graph)
   GR_SECTOR_LEN=4096  # the SECTOR_LEN for graph replicated layout
+  N_PQ_CODE=4         # represent PQ dimension. 4 represents 4 dim compressed to one PQ byte
+                      # Usually, for single-modal dataset, N_PQ_CODE should be 4 for optimal performance.
+                      # For multi-modal dataset, N_PQ_CODE should be 2 for optimal performance.
 }
