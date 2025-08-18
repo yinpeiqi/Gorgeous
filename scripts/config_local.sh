@@ -10,22 +10,22 @@ dataset_sift_learn
 ##################
 R=64        # graph degree
 BUILD_L=128 # build complexity
-M=10        # 10G for graph build, users can use a larger value
+M=100        # 10G for graph build, users can use a larger value
 BUILD_T=64  # number of threads for build
 
 ##################################
 #   In-Memory Navigation Graph   #
 ##################################
-MEM_R=24
-MEM_BUILD_L=128
-MEM_ALPHA=1.2
-MEM_RAND_SAMPLING_RATE=0.005
+MEM_R=24     # graph degree
+MEM_BUILD_L=128 # build complexity
+MEM_ALPHA=1.2 # alpha
+MEM_RAND_SAMPLING_RATE=0.005    # we use 5% for building in-memory navigation graph
 
 #######################
 #   Graph Partition   #
 #######################
-GP_TIMES=16
-GP_T=64
+GP_TIMES=16 # number of times to partition (Starling's configures)
+GP_T=64 # number of threads
 GP_LOCK_NUMS=0 # will lock nodes at init, the lock_node_nums = partition_size * GP_LOCK_NUMS
 GP_CUT=4096 # the graph's degree will been limited at 4096
 
@@ -47,8 +47,8 @@ EMB_SEARCH_RATIO=0.4            # ratio of embedding being search when using mem
 USE_DISK_GRAPH_CACHE_INDEX=1    # new index with cache neighbor graph in a page.
 PQ_FILTER_RATIO=0.9             # DecoANN PQ filter ratio
 
-# Page Search
-USE_PAGE_SEARCH=0               # Set 0 for beam search, 1 for page search (Starling)
+# Page Search (Starling's configures)
+USE_PAGE_SEARCH=1               # Set 0 for beam search, 1 for page search (Starling)
 PS_USE_RATIO=0.3
 
 # KNN
