@@ -136,3 +136,22 @@ This executes the search with the configured parameters and outputs results.
 
 ### 8. Obtain Output
 
+```
+   L  BW      QPS Mean Ltc  999 Ltc Graph IO   Emb IO  Ext Cmp   PQ Cmp   Pre(T)  Disp(T)  Read(T)  Page(T) Cache(T) DiskN(T)  Post(T)  Mem(MB) Recall@10
+  50   8  3348.54     2374    17531    31.22    11.52    42.74  2801.35     0.03    10.64  1556.37     0.00   132.58   149.80   433.14      178     97.71
+ 100   8  2072.21     3856    26229    46.33    23.94    70.27  3734.37     0.03    19.36  2673.35     0.00   185.01   212.89   627.82      180     99.81
+```
+
+**Output Column Descriptions:**
+- `L`: Search list depth
+- `BW`: Beam width
+- `QPS`: Queries per second (throughput)
+- `Mean Ltc`: Mean latency (microseconds)
+- `999 Ltc`: 99.9th percentile latency (microseconds)
+- `Graph IO`: Disk I/O during graph traversal (MB/s)
+- `Emb IO`: Disk I/O during embedding refinement (MB/s)
+- `Ext Cmp`: Number of exact distance comparisons
+- `PQ Cmp`: Number of product quantization comparisons
+- `Mem(MB)`: Memory consumption (MB)
+- `...(T)`: Time consumption of each part
+- `Recall@10`: Recall at top-10 results

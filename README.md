@@ -81,9 +81,15 @@ Gorgeous outperforms other disk-based systems ([DiskANN](https://github.com/micr
 
 If you find Gorgeous useful in your research, please cite:
 
-**[Gorgeous: Revisiting the Data Layout for Disk-Resident High-Dimensional Vector Search]()**
+**[Gorgeous: Revisiting the Data Layout for Disk-Resident High-Dimensional Vector Search](https://arxiv.org/abs/2508.15290)**
 
 ```bibtex
+@article{yin2025gorgeous,
+  title={Gorgeous: Revisiting the Data Layout for Disk-Resident High-Dimensional Vector Search},
+  author={Yin, Peiqi and Yan, Xiao and Zhou, Qihui and Li, Hui and Li, Xiaolu and Zhang, Lin and Wang, Meiling and Yao, Xin and Cheng, James},
+  journal={arXiv preprint arXiv:2508.15290},
+  year={2025}
+}
 ```
 
 

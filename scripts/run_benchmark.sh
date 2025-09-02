@@ -241,7 +241,7 @@ case $2 in
         exit 1
       fi
       SEARCH_SEC_LEN=${GR_SECTOR_LEN}
-      echo "Using DecoANN"
+      echo "Using Gorgeous"
     else
       if [ $USE_PAGE_SEARCH -eq 1 ]; then
         if [ ! -f ${INDEX_PREFIX_PATH}_partition.bin ]; then

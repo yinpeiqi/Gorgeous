@@ -217,13 +217,13 @@ int search_disk_index(
     // Using branching outside the for loop instead of inside and 
     // std::function/std::mem_fn for less switching and function calling overhead
     if (deco_impl && !use_graph_rep_index) {
-      // DecoANN with Starling layout
+      // Gorgeous with Starling layout
       _decoIndex->page_search(
         query, query_num, query_aligned_dim, recall_at, mem_L, L, 
         query_result_ids_64, query_result_dists[test_id],
         beamwidth, search_io_limit, pq_ratio, emb_search_ratio, stats);
     } else if (deco_impl && use_graph_rep_index) {
-      // DecoANN graph replicated
+      // Gorgeous graph replicated
       _decoIndex->page_search_dup_graph(
         query, query_num, query_aligned_dim, recall_at, mem_L, L, 
         query_result_ids_64, query_result_dists[test_id],

@@ -40,12 +40,12 @@ MEM_L=0     # non-zero to enable in-memory navigation index
 #####################
 #   Disk Sep Impl   #
 #####################
-DECO_IMPL=1                     # 1 to enable DecoANN
-MEM_GRAPH_USE_RATIO=0.5         # graph cached ratio
+DECO_IMPL=1                     # 1 to enable Gorgeous
+MEM_GRAPH_USE_RATIO=0.0         # graph cached ratio
 MEM_EMB_USE_RATIO=0.0           # embedding cached ratio
 EMB_SEARCH_RATIO=0.4            # ratio of embedding being search when using mem graph
 USE_DISK_GRAPH_CACHE_INDEX=1    # new index with cache neighbor graph in a page.
-PQ_FILTER_RATIO=0.9             # DecoANN PQ filter ratio
+PQ_FILTER_RATIO=0.9             # Gorgeous PQ filter ratio
 
 # Page Search (Starling's configures)
 USE_PAGE_SEARCH=1               # Set 0 for beam search, 1 for page search (Starling)

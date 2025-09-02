@@ -11,8 +11,8 @@ else()
         linux_aligned_file_reader.cpp math_utils.cpp natural_number_map.cpp
         natural_number_set.cpp memory_mapper.cpp partition_and_pq.cpp
         logger.cpp utils.cpp
-        decoann/deco_index.cpp decoann/index_search.cpp
-        decoann/index_search_dup_graph.cpp
+        gorgeous/deco_index.cpp gorgeous/index_search.cpp
+        gorgeous/index_search_dup_graph.cpp
         starling/page_search.cpp starling/pq_flash_index.cpp
         file_io_manager.cpp)
     add_library(${PROJECT_NAME} ${CPP_SOURCES})
