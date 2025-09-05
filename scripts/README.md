@@ -155,3 +155,35 @@ This executes the search with the configured parameters and outputs results.
 - `Mem(MB)`: Memory consumption (MB)
 - `...(T)`: Time consumption of each part
 - `Recall@10`: Recall at top-10 results
+
+
+## Comparing Other Baselines
+
+Gorgeous's codebase is extended from Starling, thus Starling and DiskANN could also run under our scripts.
+The rest of the parameters are the same as Starling's.
+
+Run with DiskANN's layout
+```
+DECO_IMPL=0
+USE_PAGE_SEARCH=0
+```
+
+Run with Starling's layout and Starling's Page Search (need to run `bash run_benchmark.sh release gp` to create the Starling's layout first).
+```
+DECO_IMPL=0
+USE_PAGE_SEARCH=1
+```
+
+Run with Starling's layout, and Gorgeous' pipelined search.
+```
+DECO_IMPL=1
+USE_DISK_GRAPH_CACHE_INDEX=0
+USE_PAGE_SEARCH=1
+```
+
+Run with Gorgeous's disk layout, and Gorgeous' pipelined search.
+```
+DECO_IMPL=1
+USE_DISK_GRAPH_CACHE_INDEX=1
+USE_PAGE_SEARCH=1
+```
