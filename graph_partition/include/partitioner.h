@@ -667,12 +667,16 @@ class graph_partitioner {
     _partition.clear();
     _partition.resize(_partition_number);
 
-    if (scale_factor != 1) {
+    if (scale_factor == 0 || this->n_primary_partition == _nd) {
+      // replicated partition
+      light_graph_replicated_partition(scale_factor);
+    } else if (scale_factor != 1) {
+      // scaled partition
       scaled_graph_partition_primary(k, scale_factor);
+      partition_statistic();
     }
 
     if (this->n_primary_partition == _nd) {
-      partition_statistic();
       std::cout << "init over." << std::endl;
       save_partition(filename);
       return;
@@ -810,6 +814,56 @@ class graph_partitioner {
     }
 
     return pid;
+  }
+
+  // graph partition (light version)
+  // use random permutation to select neighbors
+  void light_graph_replicated_partition(int scale_factor) {
+    if (n_primary_partition != _nd) {
+      std::cout << "n_primary_partition != _nd, n_primary_partition: " \
+                << n_primary_partition << ", _nd: " << _nd << std::endl;
+      exit(-1);
+    }
+
+    std::vector<unsigned> init_stream;
+    init_stream.reserve(_nd);
+    if (!_freq_list.empty()) {
+      // TODO:
+      exit(-1);
+    } else {
+      init_stream.resize(_nd);
+      std::iota(init_stream.begin(), init_stream.end(), 0);
+    }
+
+#pragma omp parallel for
+    for (auto i : init_stream) {
+      _partition[i].reserve(C);
+      _partition[i].push_back(i);
+      id2pid[i] = i;
+      filled_nodes[i] = true;
+    }
+
+#pragma omp parallel for
+    for (int pid = 0; pid < _nd; pid++) {
+      std::vector<_u32> c_nbrs;
+      c_nbrs.reserve(64);
+      for (int i = 0; i < _partition[pid].size(); i++) {
+        for (unsigned s : full_graph[_partition[pid][i]]) {
+          c_nbrs.emplace_back(s);
+        }
+        auto rng = std::default_random_engine{};
+        std::shuffle(c_nbrs.begin(), c_nbrs.end(), rng);
+        for (int j = 0; j < c_nbrs.size(); j++) {
+          if (_partition[pid].size() == C) {
+            break;
+          }
+          _partition[pid].push_back(c_nbrs[j]);
+        }
+        if (_partition[pid].size() == C) {
+          break;
+        }
+      }
+    }
   }
 
   // graph partition
